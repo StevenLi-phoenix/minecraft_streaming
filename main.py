@@ -20,7 +20,7 @@ def update():
     for name in glob.glob("minecraft/blockstates/*"):
         with open(name, "r") as f:
             data = json.loads(f.read())
-        if "glass" in name or "spawner" in name or "egg" in name:
+        if "glass" in name or "spawner" in name or "egg" in name or "coral" in name:
             continue
         if "variants" in data.keys():
             data = data["variants"]

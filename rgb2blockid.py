@@ -6,6 +6,7 @@ class matchBlock:
     def __init__(self):
         with open("block_color.json", "r") as f:
             self.dictionary = json.loads(f.read())
+        self.Lock = threading.BoundedSemaphore(10)
 
     def find(self, rgb, save=False, row=None, col=None):
         rgb = np.array(rgb)
@@ -18,7 +19,9 @@ class matchBlock:
                 error = new_error
         if save:
             self.pic[row][col] = match
+            self.Lock.release()
         else:
+            self.Lock.release()
             return match
 
     def matchPicture(self, img):
@@ -27,16 +30,28 @@ class matchBlock:
         :param img: rbg
         :return: block id need be placed
         """
+
+        def eachcolprogress(row_t):
+            process_t = []
+
+            for col in range(len(img[0])):
+                self.Lock.acquire()
+                t = threading.Thread(target=self.find, args=(img[row_t][col], True, row_t, col,))
+                t.start()
+                print(f"\r{row_t},{col},{threading.active_count()}", end="\t")
+                process_t.append(t)
+
+            for t in process_t:
+                t.join()
+
         self.pic = np.zeros((len(img), len(img[0]))).tolist()
         process = []
         for row in range(len(img)):
-            for col in range(len(img[0])):
-                t = threading.Thread(target=self.find, args=(img[row][col],True,row,col,))
-                t.start()
-                print(f"\r{row},{col}", end="")
-                process.append(t)
-        for task in process:
-            task.join()
+            t = threading.Thread(target=eachcolprogress, args=(row,))
+            t.start()
+            process.append(t)
+        for t in process:
+            t.join()
         return self.pic
 
 
