@@ -5,7 +5,7 @@ import json
 import rgb2blockid
 
 
-def input():
+def input_vid():
     cap = cv2.VideoCapture("newYear.mp4")
     ret = True
     imgs = []
@@ -23,10 +23,9 @@ def input():
         f.write(json.dumps(pics))
 
 
-def output():
-    prefix = True
+def output(prefix = True):
     if prefix:
-        with open("/Users/lishuyu/Downloads/happyNewYear.json", "r") as f:
+        with open(f"/Users/lishuyu/Downloads/{input()}", "r") as f:
             pics = json.loads(f.read())
     else:
         with open("happyNewYear.json", "r") as f:
@@ -37,9 +36,9 @@ def output():
         for row in range(len(pic)):
             for col in range(len(pic[0])):
                 id = pic[row][col]['id']
-                s += f"setblock {row} {0} {-col} {id}\n"
+                s += f"setblock {-col} {0} {row} {id}\n"
                 if id == "gravel" or id == "sand":
-                    s += f"setblock {row} {-1} {-col} stone\n"
+                    s += f"setblock {-col} {-1} {row} stone\n"
         file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
         with open(file_path + f"pic{i}.mcfunction", "w") as f:
             f.write(s)
@@ -50,7 +49,7 @@ def order():
     s_cla = ""
     file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
     for i in range(390):
-        s += f"schedule function custom:pic{i} {i*5 + 5}t\n"
+        s += f"schedule function custom:pic{i} {i + 5}s\n"
         s_cla += f"schedule clear custom:pic{i}\n"
     with open(file_path + f"pic.mcfunction", "w") as f:
         f.write(s)
@@ -60,7 +59,7 @@ def order():
 
 if __name__ == '__main__':
     start_time = time.time()
-    # input()
+    # input_vid()
     output()
     order()
     print(time.time()-start_time)
