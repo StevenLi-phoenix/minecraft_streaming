@@ -21,7 +21,7 @@ def input_vid(seq=False, shape = (96, 54)):
             i += 1
             print(f"\rGet new frame {i}", end="")
             imgs.append(cv2.cvtColor(cv2.resize(img, shape), cv2.COLOR_RGB2BGR))
-            # if i == 2000: break
+            if i == 3000: break
     print(f"\nEnd capture with time {time.time() - starttime}")
     m = rgb2blockid.matchBlock(shape[1], shape[0])
     print("Start progressing")
@@ -39,9 +39,10 @@ def input_vid(seq=False, shape = (96, 54)):
 def output(pics=None):
     print("Start output commands")
     if pics is None:
+        print("start load dataset")
         with open("happyNewYear.json", "r") as f:
             pics = json.loads(f.read())
-        print("load pretrain dataset done")
+        print("loaded dataset done")
     print("start writing commands")
     assert pics[0] != pics[10]
     current_status = pics[0]
@@ -54,15 +55,13 @@ def output(pics=None):
                 if id != current_status[row][col] or i == 0:
                     current_status[row][col] = id
                     s += f"setblock {col} {0} {row} {id}\n"
-                    if id == "gravel" or id == "sand":
-                        s += f"setblock {col} {-1} {row} stone\n"
         file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
         with open(file_path + f"pic{i}.mcfunction", "w") as f:
             f.write(s)
 
-    print("start establish schedule and clear order")
-    s = ""
-    s_cla = ""
+    print("start establish schedule and clear commands")
+    s = "fill 95 -1 53 0 -1 0 stone\ngamemode spectator @a\ntp @a 48.0 27.5 27.0 -180 90\n"
+    s_cla = "gamemode creative @a\n"
     file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
     for i in tqdm(range(len(pics))):
         s += f"schedule function custom:pic{i} {i + 20}t\n"
