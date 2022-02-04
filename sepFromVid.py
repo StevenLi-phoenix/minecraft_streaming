@@ -3,13 +3,12 @@ import time
 import cv2
 import json
 
-import numpy as np
 from tqdm import tqdm
 
 import rgb2blockid
 
 
-def input_vid(seq=False):
+def input_vid(seq=False, shape = (96, 54)):
     starttime = time.time()
     print("start capture")
     cap = cv2.VideoCapture("lie.mp4")
@@ -21,10 +20,10 @@ def input_vid(seq=False):
         if ret:
             i += 1
             print(f"\rGet new frame {i}", end="")
-            imgs.append(cv2.cvtColor(cv2.resize(img, (96, 54)), cv2.COLOR_RGB2BGR))
-            if i == 1000: break
+            imgs.append(cv2.cvtColor(cv2.resize(img, shape), cv2.COLOR_RGB2BGR))
+            # if i == 2000: break
     print(f"\nEnd capture with time {time.time() - starttime}")
-    m = rgb2blockid.matchBlock(54, 96)
+    m = rgb2blockid.matchBlock(shape[1], shape[0])
     print("Start progressing")
     pics = []
     for i in tqdm(range(len(imgs))):
@@ -42,7 +41,7 @@ def output(pics=None):
     if pics is None:
         with open("happyNewYear.json", "r") as f:
             pics = json.loads(f.read())
-    print("load pretrain dataset done")
+        print("load pretrain dataset done")
     print("start writing commands")
     assert pics[0] != pics[10]
     current_status = pics[0]
@@ -60,6 +59,7 @@ def output(pics=None):
         file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
         with open(file_path + f"pic{i}.mcfunction", "w") as f:
             f.write(s)
+
     print("start establish schedule and clear order")
     s = ""
     s_cla = ""

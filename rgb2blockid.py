@@ -1,16 +1,12 @@
 import json
 import time
 
-import numpy as np
-import threading
-from tqdm import tqdm
-
 
 class matchBlock:
     def __init__(self, img_x, img_y):
-        # self.img_x = img_x
-        # self.img_y = img_y
-        self.pic = np.zeros((img_x, img_y)).tolist()
+        self.img_x = img_x
+        self.img_y = img_y
+        print("Start loading Dictionary")
         with open("dictionary_rgb.json", "r") as f:
             self.rgb = json.loads(f.read())
             print("Loaded Dictionary")
@@ -20,7 +16,7 @@ class matchBlock:
                 self.progress_list.append([row, col])
 
     def matchPicture(self, img):
-        # self.pic = np.zeros((self.img_x, self.img_y)).tolist()
+        self.pic = [[0 for _f in range(self.img_y)] for _i in range(self.img_x)]
         for value in self.progress_list:
             self.find(img[value[0]][value[1]].tolist(), value)
         return self.pic
@@ -32,7 +28,6 @@ class matchBlock:
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-
     img = plt.imread("sample.jpg")
     assert img.shape[2] == 3
     starttime = time.time()
