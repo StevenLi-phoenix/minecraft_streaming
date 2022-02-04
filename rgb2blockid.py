@@ -8,28 +8,31 @@ from tqdm import tqdm
 
 class matchBlock:
     def __init__(self, img_x, img_y):
+        # self.img_x = img_x
+        # self.img_y = img_y
         self.pic = np.zeros((img_x, img_y)).tolist()
-        print("Start Load Dictionary")
         with open("dictionary_rgb.json", "r") as f:
             self.rgb = json.loads(f.read())
             print("Loaded Dictionary")
+        self.progress_list = []
+        for row in range(img_x):
+            for col in range(img_y):
+                self.progress_list.append([row, col])
 
     def matchPicture(self, img):
-        progress_list = []
-        for row in range(len(img)):
-            for col in range(len(img[0])):
-                progress_list.append([row, col])
-        for value in progress_list:
-            self.pic[value[0]][value[1]] = self.find(img[value[0]][value[1]].tolist())
+        # self.pic = np.zeros((self.img_x, self.img_y)).tolist()
+        for value in self.progress_list:
+            self.find(img[value[0]][value[1]].tolist(), value)
         return self.pic
 
-    def find(self, rgb):
+    def find(self, rgb, value):
         assert type(rgb[0]) == int and type(rgb[1]) == int and type(rgb[2]) == int
-        return self.rgb[f"{rgb[0]},{rgb[1]},{rgb[2]}"]
+        self.pic[value[0]][value[1]] = self.rgb[f"{rgb[0]},{rgb[1]},{rgb[2]}"]
 
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
+
     img = plt.imread("sample.jpg")
     assert img.shape[2] == 3
     starttime = time.time()
