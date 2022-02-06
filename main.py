@@ -87,10 +87,11 @@ class stream:
         while True:
             ret, img = cap.read()
             if ret:
-                self.img = cv2.cvtColor(cv2.resize(img, (48, 27)), cv2.COLOR_RGB2BGR) / 255
+                self.img = cv2.cvtColor(cv2.resize(img, (48, 27)), cv2.COLOR_RGB2BGR)
             cv2.waitKey(100)
 
-    def output(self, pic):
+    def output(self, file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"):
+        pic = self.m.matchPicture(self.img)
         s = "# minecraft convert save.json to command lines\n"
         s_cla = "# minecraft reset program"
         for row in range(len(pic)):
@@ -100,7 +101,6 @@ class stream:
                 s_cla += f"setblock {row} {0} {-col} air\n"
                 if id == "gravel" or id == "sand":
                     s += f"setblock {row} {-1} {-col} stone\n"
-        file_path = "/Users/lishuyu/Library/Application Support/minecraft/saves/虚空/datapacks/test/data/custom/functions/"
         with open(file_path + "pic.mcfunction", "w") as f:
             f.write(s)
         with open(file_path + "cla.mcfunction", "w") as f:
@@ -111,9 +111,8 @@ class stream:
         while True:
             if self.img is None:
                 time.sleep(1)
-                continue
-            pic = self.m.matchPicture(self.img)
-            threading.Thread(target=self.output, args=(pic,)).start()
+            else:
+                threading.Thread(target=self.output).start()
 
 
 if __name__ == '__main__':
