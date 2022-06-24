@@ -27,3 +27,5 @@ main function:
  Warnning: Old version of this is using brute force to find match rgb2blockid, this may take hours, depending on computer, for my trash computer it take 2 hrs to complete. Although this find optimal solution it is too slow.
  
  todo: change algorithm.
+
+Also, this include a vanilla minecraft resource pack of 1.17(?,or 1.16)
