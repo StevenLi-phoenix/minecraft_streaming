@@ -116,6 +116,7 @@ class stream:
 
 
 if __name__ == '__main__':
+    # 查表大法好
     # update()
     s = stream()
     s.main()
