@@ -24,3 +24,6 @@ main function:
   
  Warnning: not sure why it sometimes lagging and stuck, but mannual reload and execute helped.
  
+ Warnning: Old version of this is using brute force to find match rgb2blockid, this may take hours, depending on computer, for my trash computer it take 2 hrs to complete. Although this find optimal solution it is too slow.
+ 
+ todo: change algorithm.
