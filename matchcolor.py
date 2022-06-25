@@ -2,7 +2,7 @@ from tqdm import tqdm
 from json import load, dump
 
 block_colors = load(open("block_color.json", "r"))
-rgb_list = [(r, g, b) for r in range(256) for g in range(1) for b in range(1)]
+rgb_list = [(r, g, b) for r in range(256) for g in range(256) for b in range(256)]
 
 def calculate_distance(point1, point2) -> float:
     x1, y1, z1 = point1
