@@ -12,7 +12,7 @@ def calculate_distance(point1, point2) -> float:
     return distance
 
 rgb_dictionary = {}
-for rgb in tqdm(rgb_list):
+for rgb in tqdm(rgb_list, miniters=int(16777216/100)):
     min_dis = 444 # diagonal length
     selection = block_colors[0] #'gray_concrete'
     for block_color in block_colors:
