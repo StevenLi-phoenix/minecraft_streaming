@@ -16,7 +16,6 @@ assert path.exists(path_textures_block)
 
 def update():
     dictionary = []
-
     for name in glob.glob(f"{path_blockstat}/*"):
         with open(name, "r") as f:
             data = json.loads(f.read())
@@ -46,7 +45,7 @@ def update():
                 continue
         else:
             continue
-        # minecraft:block/acacia_log_top
+        # minecraft:block/acacia_log
         # path_textures_block/acacia_log_top.png
 
         if texture.startswith("minecraft:block"):
@@ -73,6 +72,7 @@ def update():
 
     with open("block_color.json", "w") as f:
         f.write(json.dumps(dictionary))
+    return dictionary
 
 if __name__ == '__main__':
-    update()
+    dictionary = update()
