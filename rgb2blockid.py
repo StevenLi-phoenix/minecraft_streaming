@@ -28,8 +28,9 @@ class matchBlock:
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    img = plt.imread("sample.jpg")
-    assert img.shape[2] == 3
+    img = plt.imread("pack.png")
+    if not img.shape[2] == 3:
+        img = img[:,:,:3]
     starttime = time.time()
     m = matchBlock(img.shape[0], img.shape[1])
     print(f"Load time: {round(time.time() - starttime, 2)}s")

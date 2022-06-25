@@ -6,14 +6,18 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as col
 import numpy as np
 
-assert path.exists("minecraft/blockstates")
-assert path.exists("minecraft/models/block")
-assert path.exists("minecraft/textures/block")
+base = "assets"
+path_blockstat = path.join(base, "minecraft/blockstates")
+path_model_block = path.join(base, "minecraft/models/block")
+path_textures_block = path.join(base, "minecraft/textures/block")
+assert path.exists(path_blockstat)
+assert path.exists(path_model_block)
+assert path.exists(path_textures_block)
 
 def update():
     dictionary = []
 
-    for name in glob.glob("minecraft/blockstates/*"):
+    for name in glob.glob(f"{path_blockstat}/*"):
         with open(name, "r") as f:
             data = json.loads(f.read())
         if "glass" in name:
@@ -30,7 +34,7 @@ def update():
                 continue
         else:
             continue
-        with open(data.replace("minecraft:block", "minecraft/models/block") + ".json", "r") as f:
+        with open(data.replace("minecraft:block", f"{path_model_block}") + ".json", "r") as f:
             texture = json.loads(f.read())
         if "textures" in texture.keys():
             texture = texture["textures"]
@@ -43,13 +47,13 @@ def update():
         else:
             continue
         # minecraft:block/acacia_log_top
-        # minecraft/textures/block/acacia_log_top.png
+        # path_textures_block/acacia_log_top.png
 
         if texture.startswith("minecraft:block"):
-            texture = texture.replace("minecraft:block", "minecraft/textures/block")
+            texture = texture.replace("minecraft:block", path_textures_block)
         elif texture.startswith("block/"):
-            texture = texture.replace("block/", "minecraft/textures/block/")
-        assert texture.startswith("minecraft/textures/block/")
+            texture = texture.replace("block", path_textures_block)
+        assert texture.startswith(path_textures_block)
         texture = texture + ".png"
         print(texture, end="\t")
         img = plt.imread(texture)
