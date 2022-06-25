@@ -28,4 +28,4 @@ main function:
  
  todo: change algorithm.
 
-Also, this include a vanilla minecraft resource pack of 1.17(?,or 1.16)
+Also, this include a vanilla minecraft resource pack of 1.19
