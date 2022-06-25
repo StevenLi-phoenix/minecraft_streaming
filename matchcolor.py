@@ -20,5 +20,5 @@ for rgb in tqdm(rgb_list, mininterval=1):
         if cur_dis < min_dis:
             min_dis = cur_dis
             selection = block_color
-    rgb_dictionary[rgb] = selection
+    rgb_dictionary[str(rgb)] = selection
 dump(rgb_dictionary, open("dictionary_rgb.json","w"))
